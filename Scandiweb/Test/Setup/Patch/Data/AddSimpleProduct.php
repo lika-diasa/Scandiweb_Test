@@ -1,4 +1,5 @@
-<?PHP
+<?php
+
 declare(strict_types=1);
 
 namespace Scandiweb\Test\Setup\Patch\Data;
@@ -19,28 +20,74 @@ use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
+/**
+ * Create Migration product class
+ */
 class AddSimpleProduct implements DataPatchInterface
 {
+    /**
+     * @var ModuleDataSetupInterface
+     */
     protected ModuleDataSetupInterface $setup;
 
+    /**
+     * @var ProductInterfaceFactory
+     */
     protected ProductInterfaceFactory $productInterfaceFactory;
 
+    /**
+     * @var ProductRepositoryInterface
+     */
     protected ProductRepositoryInterface $productRepository;
 
+    /**
+     * @var State
+     */
     protected State $appState;
 
+    /**
+     * @var EavSetup
+     */
     protected EavSetup $eavSetup;
 
+    /**
+     * @var StoreManagerInterface
+     */
     protected StoreManagerInterface $storeManager;
 
+    /**
+     * @var SourceItemInterfaceFactory
+     */
     protected SourceItemInterfaceFactory $sourceItemFactory;
 
+    /**
+     * @var SourceItemsSaveInterface
+     */
     protected SourceItemsSaveInterface $sourceItemsSaveInterface;
 
+    /**
+     * @var CategoryLinkManagementInterface
+     */
     protected CategoryLinkManagementInterface $categoryLink;
 
+    /**
+     * @var array
+     */
     protected array $sourceItems = [];
 
+    /**
+     * Migration patch constructor.
+     *
+     * @param ModuleDataSetupInterface $setup
+     * @param ProductInterfaceFactory $productInterfaceFactory
+     * @param ProductRepositoryInterface $productRepository
+     * @param State $appState
+     * @param StoreManagerInterface $storeManager
+     * @param EavSetup $eavSetup
+     * @param SourceItemInterfaceFactory $sourceItemFactory
+     * @param SourceItemsSaveInterface $sourceItemsSaveInterface
+     * @param CategoryLinkManagementInterface $categoryLink
+     */
     public function __construct(
         ModuleDataSetupInterface $setup,
         ProductInterfaceFactory $productInterfaceFactory,
@@ -63,23 +110,44 @@ class AddSimpleProduct implements DataPatchInterface
         $this->categoryLink = $categoryLink;
     }
 
-    public static function getDependencies()
+    /**
+     * @return array|string[]
+     */
+    public static function getDependencies(): array
     {
         return [];
     }
 
-    public function getAliases()
+    /**
+     * @return array|string[]
+     */
+    public function getAliases(): array
     {
         return [];
     }
 
-    public function apply()
+    /**
+     * Add new product
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function apply(): void
     {
         // run setup in back-end area
         $this->appState->emulateAreaCode('adminhtml', [$this, 'execute']);
     }
 
-    public function execute()
+    /**
+     * @return void
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\StateException
+     * @throws \Magento\Framework\Validation\ValidationException
+     */
+    public function execute(): void
     {
         // create the product
         $product = $this->productInterfaceFactory->create();
@@ -88,7 +156,6 @@ class AddSimpleProduct implements DataPatchInterface
         if ($product->getIdBySku('new-product-sku')) {
             return;
         }
-
 
         $attributeSetId = $this->eavSetup->getAttributeSetId(Product::ENTITY, 'Default');
         $websiteIDs = [$this->storeManager->getStore()->getWebsiteId()];
