@@ -137,7 +137,7 @@ class AddSimpleProduct implements DataPatchInterface
      * Add new product
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function apply(): void
     {
@@ -145,14 +145,14 @@ class AddSimpleProduct implements DataPatchInterface
         $this->appState->emulateAreaCode('adminhtml', [$this, 'execute']);
     }
 
-    /**
+    /***
      * @return void
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\StateException
-     * @throws \Magento\Framework\Validation\ValidationException
+     * @throws CouldNotSaveException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws StateException
+     * @throws ValidationException
      */
     public function execute(): void
     {
