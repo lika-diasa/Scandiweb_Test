@@ -2,8 +2,8 @@
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-\Magento\Framework\Component\ComponentRegistrar::register(
-    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+ComponentRegistrar::register(
+    ComponentRegistrar::MODULE,
     'Scandiweb_Test',
     __DIR__
 );
